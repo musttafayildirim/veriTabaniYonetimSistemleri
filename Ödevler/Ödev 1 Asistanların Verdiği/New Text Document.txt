@@ -1,0 +1,26 @@
+--select Uye_Adi,Uye_Tipi from Uye where not Uye_Adi='Burhan'
+--select Uye_Adi,Uye_Tipi from Uye where  Uye_Adi='Burhan'
+--select Uye_Adi,Uye_Tipi from Uye where Uye_Id <> 2 
+--select Uye_Adi,Uye_Tipi,Uye_Soyadi from Uye where Uye_Id = 2 
+--select Uye_Adi,Uye_Soyadi,Uye_Id from Uye where Uye_Id between 2 and 8
+--select * from Uye where Uye_Adi like '%M%'
+--select * from Uye where Uye_Adi like 'M%'
+--select * from Uye where Uye_Adi like '%M'
+--select * from Uye where Uye_Adi like '___a%'
+--select * from Uye where Uye_Adi like '_u%'
+--select * from Uye where Uye_Adi like '_____' and Uye_Adi like '%a%'
+-- into Oyun(Oyun_Id) values(55)
+
+select * from pers order by pAdi
+select pMaas AS 'Maaslar'	from pers
+select * from pers where pAdi like '[BM]%'
+
+
+
+select fiyat from Arac
+select fiyat*20/100 from Arac
+select Alim_Fiyat*15/100 from Alim where Alim_Tarih<'2017-01-01'
+select Musteri_Adi +'  ' + Musteri_Soyadi from Musteri order by Musteri_Adi ASC
+
+ 
+

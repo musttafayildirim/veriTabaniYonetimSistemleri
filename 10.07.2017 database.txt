@@ -1,0 +1,158 @@
+create database yariisma
+use yariisma
+create table SoruTur(
+STNo int primary key identity (1,1),
+STAdi varchar (15)
+)
+
+create table Il(
+ilPNo int primary key,
+ilAdi varchar (30)
+)
+
+create table Uye(
+UNo int primary key identity (1,1),
+UAdi varchar (20),
+USoyadi varchar (25),
+UTrh date,
+ilPNo int foreign key references Il(ilPNo),
+Sifre varchar (15),
+GS int ,
+UPuan int 
+
+)
+
+create table Soru (
+SNo int primary key identity (1,1),
+SBaslik varchar (25),
+S1 varchar(50),
+S2 varchar(50),
+S3 varchar(50),
+S4 varchar(50),
+DC varchar (5),
+STNo int foreign key references SoruTur(STNo),
+SPuan int ,
+UNo int foreign key references Uye (UNo)
+)
+
+create table istatistik(
+UNo int foreign key references Uye (UNo),
+ÝTrh date,
+TPuan int 
+)
+
+
+
+select * from uye
+select * from Soru	
+
+select Uye.UAdi,Uye.USoyadi,Il.ilAdi from Il,Uye where Il.ilPNo=Uye.ilPNo
+
+// AYNI KAYDIN TEKRARINI ÖNLÜYOR  \\
+select distinct Il.ilAdi from Il,Uye where Il.ilPNo=Uye.ilPNo
+
+
+SELECT * FROM Uye order by Uye.UAdi asc // baþtan sona doðru sýralama
+
+SELECT * FROM Uye order by Uye.UAdi desc // sondan baþa doðru sýralama
+
+SELECT * FROM Uye order by Uye.UAdi asc, Uye.USoyadi asc // hem isim hem de soyisim ile sýralama
+
+select * from Uye order by Uye.UPuan desc
+
+select * from Uye where Uye.UPuan>=100 order by Uye.UPuan desc 
+
+
+select UAdi AS 'Uye Adi:' , USoyadi AS 'Uye Soyadi:'from Uye
+
+// SORU \\
+plaka numarasý 10 dan küüçük olan soru gönderen üyelerin bilgilerini yüksek puandan düþük puana dogru sýralayarak listele 
+AND  operatörü kullanmadan 
+ 
+select * from Uye,Soru where Soru.UNo=Uye.UNo and Uye.ilPNo<10 order by Uye.UPuan desc
+
+select * from  Uye where UNo IN (select UNo	from Soru) and ilPNo IN (select ilPNo from Il where ilPNo<10) order by Uye.UPuan desc 
+
+
+/// AYNI ISLEMI YAPIYORLAR \\\
+select * from Il where ilPNo<=60 and ilPNo>=10 
+select * from Il where ilPNo between 10 and 
+
+
+
+select * from Uye where Sifre IS NULL
+
+
+
+--fonsiyonlar ve operatörler
+select 3*4/5+3
+
+select Il.ilAdi, SUBSTRING(Il.ilAdi,1,3	) AS 'ÝL ' from Il
+
+select Il.ilAdi , UPPER(Il.ilAdi) AS  'Büyük' , LOWER(Il.ilAdi) AS 'küçük' 
+
+select Il.ilAdi, LEN(Il.ilAdi) AS 'Uzunluk' from Il
+
+select Il.ilAdi, REPLACE(Il.ilAdi,'a','e') AS 'Deðiþtirme' from Il
+
+
+select Il.ilAdi,REVERSE(Il.ilAdi) AS 'Tersten yazdýrma' from Il
+
+
+select ABS(-5) 'Mutlak Deðer'
+
+select CEILING(1.25)
+select FLOOR(1.25)
+select ROUND(1.25,0)
+
+select POWER(2,3) AS 'Üs Alma  '
+
+select SQRT(64) 
+
+
+SUM --bir sütündaki sayýsal deðerlerin toplamýný verir
+AVG --                                 ORTLAMASINI
+MAX --
+MIN --
+COUNT KAYIYIT YA DA SAYISINI GÖSTERÝYRO
+
+SELECT * FROM Uye
+
+select SUM(Uye.UPuan) AS 'Toplam puan 'from Uye
+select AVG(Uye.UPuan) AS 'Ort. Puan  'from Uye
+select MAX(Uye.UPuan) AS 'ENBüyük puan 'from Uye
+select MIN(Uye.UPuan) AS 'ENKÜÇÜK puan 'from Uye
+
+
+select COUNT(Uye.ilPNo) AS 'Kayýt Sayýsý' from Uye
+select COUNT(*) AS 'Kayýr Sayýsý'from Uye
+
+select GETDATE() AS 'Tarih ve Saat' 
+select DATEPART(YEAR,GETDATE())
+select DATEPART(DAY,GETDATE())
+
+
+-- CAST	 t-SQL
+declare @sayi int , @sayi2 varchar(10) 
+set @sayi=20
+set @sayi2=CAST(@sayi as varchar (10))
+print(@sayi2)
+
+
+										--SORU--
+
+--En yüksek puana sahip üyeninkaç tane soru gönderdiðini listeleyecek bir sql sorgusu yazýnýz --
+
+						--CEVAP--
+select COUNT(Soru.UNo) AS 'Gönderilen Soru Sayýsý' from Soru where UNo 
+IN (select Uye.UNo from Uye where Uye.UPuan=(select  MAX(Uye.UPuan)from Uye) )
+
+
+
+										--SORU--
+
+
+SORU GÖNDEREN ve toplam puaný en yüksek puanlý sorudan düþük olan üyeler  hangi tür de soru göndermiþlerdir
+
+select COUNT(Soru.UNo) from Soru where UNo IN (select Soru.SNo from Soru,Uye where SUM(Uye.UPuan) = MAX(Soru.SPuan)  )
+yapamadým

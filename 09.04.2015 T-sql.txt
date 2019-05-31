@@ -1,0 +1,154 @@
+09.04.2015
+T-SQL
+i)if karar yapısı
+if(sart1)
+ Begin
+  //sql sorguları
+ End
+Else if(sart2)
+ Begin
+ //sql sorguları
+ End
+-------
+-------
+Else 
+ Begin
+ //sql sorguları
+ end
+
+ii)CASE
+a)case değişken
+when deger1 than sonuc1
+when deger 2 than sonuc2
+-----
+else sonuc n
+End 
+b)CASE
+when şart1 then işlem1
+when şart2 then işlem2
+---
+else işlem n
+end
+
+iii)WHİLE
+while (şart)
+BEgin
+----
+sayac
+End
+->Continue :
+//Döngü içeresinde aktif olan adımı atlayarak bir sonraki adıma geçilmesini sağlar.
+->BREAK :
+//Döngüyü istenilen bir adımda sonlandırmak için kullanılır.
+
+iV)Return:
+kulllanıldığı yerlerde t-sgl çalışmalarını durudurur.
+
+V)Goto:
+//istenilen etikette dalllanma sağlar.
+don:
+islemler
+---------
+Goto don
+
+Vi)Waitfor
+//istenilen bir anda veya belli bir süre gecikmeyle t-sql kodlarının çalışmasınıo sağlar.
+waitfor time '12.00'
+
+HATA YAKALAMA
+BEgin Try
+------
+------//hata olabilecek
+End Try
+Begin catch
+------
+-----//Ne yapılacak
+End catch
+
+
+--uygulaması
+use YarismaSitesi
+select *from Uye
+
+--ıf
+declare @us int
+select @us =count(Uye.UNo)from Uye
+if(@us>=0 and @us<=5)
+ Begin
+	print('Uye sayısı :'+cast(@us as varchar(10)))
+	print('Az sayida uye var...')
+	end
+Else if(@us>5 and @us<=20)
+ Begin
+     print('Uye sayısı :'+cast(@us as varchar(10)))
+	 print('yeterli sayida uye var...')
+	end
+Else
+	Begin
+		print('Uye sayısı :'+cast(@us as varchar(10)))
+	print('Fazla uye var...')
+	end
+Go
+select *from Uye
+Alter table Uye ADD  Cinsiyet bit NULL
+update Uye set Cinsiyet=1
+insert into Uye values('Ezgi','Karahan','',1,'123',2,25,0)
+
+--
+select Uye.UAdi,Uye.USoyadi,Uye.Cinsiyet,Cinsiyeti
+	Case Uye.Cinsiyet
+	when 1 then 'Erkek'
+	when 0 then 'Bayan'
+	End
+	from Uye
+	
+Select *from Uye  
+--
+declare @sayac int
+set @sayac =1
+while(@sayac<=4)
+Begin
+ print(@sayac)
+ set @sayac+=1
+end
+--Bir sayını asal sayı olup olmadığını gösteren bir T  sql kodu yazınız.
+declare @x int
+declare @y int
+declare @asal char(5)
+set @x=9
+set @y=1
+set @asal='Asal'
+while @y<@x-1
+begin
+set @y=@y+1
+if (@x%@y)=0 set @asal='Asal değil'
+if (@x%@y)=0 break
+end
+print @asal
+
+--sınavda tarzı soru
+--yarısmasitesi veritabanı üzerinde oluşturulacak yeni bir tabloda
+--bir üyenin bugüne kadar çözlmüş olduğu sorular ve bu sorulara vermiş olduğu cevaplar tutulacaktır.
+--gerekli olan alanları belireyerek bu tabloyu oluşturunuz.
+--Daha sonra herbir üyenin bu güne kadar kaç tane soru çözdüğünü ve bu sorulardan kaçına doğru cevap verdiğini
+--kaç tanesine yanlış cevap verdiğini almış olduğu toplam puanı ekranda listeleyerek T-SQL kodlarını ve sql sorgularını yazınız.
+create table cözülmüs(Uno int foreign key references Uye(Uno),Uye int foreign key references SoruTablosu(Sno),Cevap varchar(5))
+Alter table cözülmüs ADD  Cevap bit NULL
+update cözülmüs set 
+Cevap=1
+select *from cözülmüs
+
+---
+
+ begin try 
+ select 5/0
+ end try 
+ begin catch 
+ select ERROR_LINE()as 'hata satırı',
+		ERROR_NUMBER() as'hata numarası',
+		ERROR_MESSAGE() as 'hata mesajı',
+		ERROR_SEVERITY() as 'hata derecesi',
+		ERROR_PROCEDURE()as 'hata kodu'
+end catch
+
+
